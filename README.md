@@ -41,6 +41,12 @@ npm install --save axios
 # 3 组件使用
 
 ## 3.1 axios
+>安装
+
+```bash
+npm install axios --save
+```
+
 >局部注册
 ```bash
 import axios from 'axios';
@@ -171,6 +177,13 @@ export default router;
 [vue-devtools安装和使用](https://github.com/vuejs/vue-devtools)
 
 ## 3.4 Vuex和localStorage
+
+>vuex安装
+
+```bash
+npm install --save vuex
+```
+
 >vuex的使用
 
 src->store 创建index.js
@@ -217,6 +230,12 @@ new Vue({
 });
 ```
 
+使用
+
+```js
+window.console.log(this.$store.state.key);
+```
+
 >vuex组件化使用
 
 把store的各个部分拆分开来
@@ -252,7 +271,7 @@ export default new Vuex.Store({
   mutations,
 });
 ```
-
+使用方法一样
 
 ## Build Setup
 
