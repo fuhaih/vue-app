@@ -1,0 +1,45 @@
+<template>
+  <div>
+    <h2>{{this.$store.state.key}}</h2>
+    <input type="text" v-model="msg"/>
+    <button v-on:click="say">添加</button>
+    <ul>
+      <li v-for="todo in todos" :key="todo.id">
+        {{todo.text}}
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Todo',
+  props: ['todos'],
+  model: {
+    prop: 'todos',
+  },
+  data() {
+    return {
+      msg: 'test',
+    };
+  },
+  methods: {
+    say() {
+      if (this.msg === null || this.msg === '') {
+        return;
+      }
+      // this.axios.get('/api/').then((response) => {
+      //   window.console.log(response);
+      // });
+      this.$store.commit('increment', 1);
+      this.todos.push({ text: this.msg });
+      window.console.log(this.msg);
+      this.msg = '';
+    },
+  },
+};
+</script>
+
+<style>
+
+</style>
