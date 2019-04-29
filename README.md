@@ -489,3 +489,28 @@ module.exports = {
   },
 }
 ```
+
+# 测试
+
+## 自动化测试e2e
+
+在用vue-cli脚手架进行项目创建的时候，会提示创建e2e自动化测试，这里使用的是nightwatch进行自动化测试。
+
+需要环境:
+
+    java 因为nightwatch使用selenium进行自动化测试，selenium依赖java环境。
+    chrome 自动化测试需要启动浏览器，默认配置中是使用chrome，所以安装chrome会比较方便，其他浏览器需要自行配置。
+>安装java，配置java环境变量
+
+>进行测试
+```bash
+npm run e2e
+```
+
+> Cannot find module 'chromedriver'
+
+这个是没有安装chromedriver模块
+
+```bash
+npm install chromedriver
+```
