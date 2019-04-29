@@ -470,8 +470,22 @@ sudo nginx -s reload
 npm install -save @babel/polyfill
 ```
 
-在main.js中进行引用
+修改build->webpack.base.conf.js文件
 
+```conf
+module.exports = {
+  entry: {
+    app: './src/main.js'
+  },
+}
 ```
-import '@babel/polyfill';
+
+修改为
+```conf
+module.exports = {
+  entry: {
+    //app: './src/main.js'
+    app: ["@babel/polyfill", "./src/main.js"]
+  },
+}
 ```
