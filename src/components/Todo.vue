@@ -28,9 +28,9 @@ export default {
       if (this.msg === null || this.msg === '') {
         return;
       }
-      // this.axios.get('/api/').then((response) => {
-      //   window.console.log(response);
-      // });
+      this.axios.get('/api/').then((response) => {
+        window.console.log(response);
+      });
       this.$store.commit('increment', 1);
       this.todos.push({ text: this.msg });
       window.console.log(this.msg);

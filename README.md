@@ -391,3 +391,87 @@ const router = new VueRouter({
   ...
 })
 ```
+
+# 发布
+
+## 使用nginx发布
+
+>编译vue
+
+```bash
+npm run build
+```
+
+编译好的文件会放在dist文件夹中，包含一个static文件夹和一个index.html文件。
+
+把这两个文件上传到linux服务器的/var/www/vueapp路径下。
+
+
+
+>配置nginx
+
+nginx默认配置文件路径为/etc/nginx/nginx.conf;
+
+在配置中添加include
+
+```conf
+http {
+  include vhosts/*.host;
+}
+```
+在nginx配置文件目录下添加一个vhosts文件夹，在该文件夹下配置需要托管的程序。
+这里需要托管的就是vue-app程序
+
+在vhosts目录下添加一个vueapp.host文件
+
+```bash
+vim vueapp.host
+```
+
+配置vueapp.host如下
+
+```conf
+server{
+
+    listen 8080 default;
+
+    server_name vueapp;
+    #vueapp路径
+    root /var/www/vueapp;
+    #默认页面
+    index index.html;
+    #uri匹配
+    location / {
+        try_files $uri $uri/ @rewrites;
+    }
+
+    location @rewrites{
+        rewrite ^(.+)$ /index.html last;
+    }
+    #匹配到api时跳转到代理
+    location /api/ {
+        proxy_pass http://127.0.0.1:9002;
+    }
+}
+```
+
+>重启nginx
+
+```bash
+sudo nginx -s reload
+```
+
+>promise未定义
+
+这个是因为浏览器不支持es6，一般出现在ie旧版本。
+解决方法是在项目中安装@babel/polyfill
+
+```bash
+npm install -save @babel/polyfill
+```
+
+在main.js中进行引用
+
+```
+import '@babel/polyfill';
+```
