@@ -1,6 +1,8 @@
 const path = require('path');
 
 module.exports = {
+  runner: 'jest-runner',
+  testURL: "http://localhost/",
   rootDir: path.resolve(__dirname, '../../'),
   moduleFileExtensions: [
     'js',

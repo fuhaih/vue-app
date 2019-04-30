@@ -119,6 +119,9 @@ export default {
   components: {
     Todo,
   },
+  created() {
+    window.console.log('HelloWorld is created');
+  },
 };
 </script>
 

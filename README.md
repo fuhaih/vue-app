@@ -492,6 +492,66 @@ module.exports = {
 
 # 测试
 
+## 单元测试
+
+使用@vue/test-utils和jest进行单元测试
+
+jest已经在使用vue-cli脚手架时默认安装
+
+>安装@vue/test-utils
+
+```bash
+npm install --save-dev jest @vue/test-utils
+```
+
+>修改测试用例HelloWorld.spec.js
+
+[参考文档](https://vue-test-utils.vuejs.org/guides/#testing-vuex-in-components)
+```js
+import Vue from 'vue';
+import { shallowMount , createLocalVue} from '@vue/test-utils'
+import HelloWorld from '@/components/HelloWorld';
+import store from '@/store';
+
+const localVue = createLocalVue()
+
+describe('HelloWorld.vue', () => {
+  it('should render correct contents', () => {
+    // const Constructor = Vue.extend(HelloWorld,{
+    //   $store: store
+    // });
+    // const vm = new Constructor().$mount();
+    // expect(vm.$el.querySelector('.hello h1').textContent)
+    // .toEqual('Welcome to Your Vue.js App');    
+
+    const wrapper = shallowMount(HelloWorld, {
+      store,
+      localVue
+    });
+    expect(wrapper.vm.$el.querySelector('.hello h1').textContent)
+    .toEqual('Welcome to Your Vue.js App');
+  });
+});
+```
+HelloWorld.vue中依赖有store，所以在测试的时候需要用到store，并且添加上localVue
+
+>进行测试
+
+```bash
+npm run unit
+```
+
+>localStorage is not available for opaque origins
+
+在jest.conf.js中配置
+
+```conf
+module.exports = {
+  runner: 'jest-runner',
+  testURL: "http://localhost/",
+}
+```
+
 ## 自动化测试e2e
 
 在用vue-cli脚手架进行项目创建的时候，会提示创建e2e自动化测试，这里使用的是nightwatch进行自动化测试。
