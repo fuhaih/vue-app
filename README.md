@@ -273,6 +273,33 @@ export default new Vuex.Store({
 ```
 使用方法一样
 
+## 3.5 vee-validate
+
+> 安装
+
+```bash
+npm install --save vee-validate
+```
+
+>全局引用并本地化
+
+main.js中
+
+```js
+import VueAxios from 'vue-axios';
+import ZhCN from 'vee-validate/dist/locale/zh_CN';
+Vue.use(Veevalidae);
+Validator.localize('Zh_CN', ZhCN);
+```
+
+>简单使用
+
+```js
+<input type="text" v-model="msg"  v-validate="'required|email'" name="email"/>
+    <span>{{ errors.first('email') }}</span>
+```
+
+
 ## Build Setup
 
 ``` bash
@@ -574,3 +601,24 @@ npm run e2e
 ```bash
 npm install chromedriver
 ```
+
+> Unexpected block statement surrounding arrow body; move the returned value immediately after the `=>`
+
+单行的方法可以直接返回，而不使用大括号。
+
+```js
+value: state => {
+  return state.value;
+},
+```
+应该写成
+
+```js
+value: state =>  state.value,
+```
+
+>函数式方法坑
+
+* 单参数不能使用括号
+* 多参数需要用括号括起来
+* 单行方法不能使用大括号括起来。
