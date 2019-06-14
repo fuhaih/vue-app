@@ -1,14 +1,14 @@
 export default {
   namespaced: true,
   state: {
-    test: 1,
+    Num: 1,
   },
   getters: {
-    value: state => state.test,
+    value: state => state.Num,
   },
   mutations: {
     updateValue(state) {
-      state.test += 1;
+      state.Num += 1;
     },
   },
   actions: {

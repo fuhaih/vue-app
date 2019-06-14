@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 // import mutations from './mutations';
 // import state from './state';
 import auth from './moudule/auth';
-import test from './moudule/test';
+import other from './moudule/other';
 import user from './moudule/user';
 
 Vue.use(Vuex);
@@ -13,10 +13,9 @@ export default new Vuex.Store({
   // mutations,
   modules: {
     auth,
-    test,
+    other,
     user,
   },
-
 });
 
 // import Vue from 'vue';

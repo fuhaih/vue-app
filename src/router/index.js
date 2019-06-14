@@ -1,19 +1,36 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
 
 Vue.use(Router);
 
 const router = new Router({
   routes: [
+    // {
+    //   path: '/',
+    //   meta: {
+    //     title: '首页',
+    //   },
+    //   mode: 'history',
+    //   name: 'HelloWorld',
+    //   component: () => import('@/components/HelloWorld'),
+    // },
     {
       path: '/',
       meta: {
         title: '首页',
       },
       mode: 'history',
-      name: 'HelloWorld',
-      component: HelloWorld,
+      name: 'Home',
+      component: () => import('@/components/Home'),
+    },
+    {
+      path: '/About',
+      meta: {
+        title: '关于',
+      },
+      mode: 'history',
+      name: 'About',
+      component: () => import('@/components/About'),
     },
   ],
 });

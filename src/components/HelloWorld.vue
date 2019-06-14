@@ -9,6 +9,11 @@
         {{todo.text}}
       </li>
     </ul> -->
+    <p>全名</p>
+    <input v-model="fullname" />
+    <p>全名:{{ fullname }}</p>
+    <p>firstname:{{ firstname }}</p>
+    <p>lastname:{{ lastname }}</p>
     <Todo v-for="todos in todogroup" v-bind:key="todos.id" v-bind:todos="todos"></Todo>
     <h2>Essential Links</h2>
     <ul>
@@ -101,6 +106,9 @@ export default {
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',
+      fullname: '',
+      firstname: '',
+      lastname: '',
       todogroup: [
         [
           { text: '学习 JavaScript' },
@@ -121,6 +129,13 @@ export default {
   },
   created() {
     window.console.log('HelloWorld is created');
+  },
+  watch: {
+    fullname(newvalue) {
+      const names = newvalue.split(' ');
+      this.firstname = names[1];
+      this.lastname = names[0];
+    },
   },
 };
 </script>

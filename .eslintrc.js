@@ -25,6 +25,7 @@ module.exports = {
   },
   // add your custom rules here
   rules: {
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     'linebreak-style': 'off',
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {

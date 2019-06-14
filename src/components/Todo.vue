@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{this.$store.state.test.test}}</h2>
+    <h2>{{this.$store.state.other.Num}}</h2>
     <!-- <input type="text" v-model="msg"  v-validate="'required|email'" name="email"/> -->
     <input type="text" v-model="msg"/>
     <span>{{ errors.first('email') }}</span>
@@ -30,9 +30,9 @@ export default {
       if (this.msg === null || this.msg === '') {
         return;
       }
-      this.axios.get('/api/').then((response) => {
-        window.console.log(response);
-      });
+      // this.axios.get('/api/').then((response) => {
+      //   window.console.log(response);
+      // });
       // this.$store.commit('increment',1);
       this.$store.dispatch('auth/updateValue');
       this.todos.push({ text: this.msg });

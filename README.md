@@ -172,6 +172,37 @@ export default router;
 
 ```
 
+>路由按需加载
+
+一般路由会把所有vue组件都打包到一块，也就是当访问首页时，其他页面组件也都加载到浏览器了，这个时候会导致访问首页很慢，
+解决方案就是按需加载，访问一个路由时才加载该路由所需的组件。
+
+```js
+const router = new Router({
+  routes: [
+    {
+      path: '/',
+      meta: {
+        title: '首页',
+      },
+      mode: 'history',
+      name: 'HelloWorld',
+      component: () => import('@/components/HelloWorld'),
+    },
+    {
+      path: '/About',
+      meta: {
+        title: '关于',
+      },
+      mode: 'history',
+      name: 'About',
+      component: () => import('@/components/About'),
+    },
+  ],
+});
+```
+`component: () => import('@/components/HelloWorld')`会实现懒加载
+
 ## 3.3 调试
 
 [vue-devtools安装和使用](https://github.com/vuejs/vue-devtools)
@@ -299,6 +330,23 @@ Validator.localize('Zh_CN', ZhCN);
     <span>{{ errors.first('email') }}</span>
 ```
 
+## 3.6 iview
+>vue-style-loader !css-loader错误
+
+这个是样式加载问题
+```bash
+npm install sass-loader --save;
+npm install node-sass --save;
+```
+
+>Parsing error: x-invalid-end-tag
+
+有两种解决办法：  
+1、MenuItem修改为：menu-item
+
+2、在根目录下 .eslintrc.js 文件 rules 下添加：
+
+`"vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]`
 
 ## Build Setup
 
@@ -622,3 +670,7 @@ value: state =>  state.value,
 * 单参数不能使用括号
 * 多参数需要用括号括起来
 * 单行方法不能使用大括号括起来。
+
+>Your test suite must contain at least one test.
+
+可能是有其他文件命名为test

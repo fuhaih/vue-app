@@ -1,14 +1,14 @@
 export default {
   namespaced: true,
   state: {
-    user: 1,
+    Num: 1,
   },
   getters: {
-    value: state => state.user,
+    value: state => state.Num,
   },
   mutations: {
     updateValue(state) {
-      state.user += 1;
+      state.Num += 1;
     },
   },
   actions: {
