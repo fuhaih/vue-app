@@ -348,6 +348,10 @@ npm install node-sass --save;
 
 `"vue/no-parsing-error": [2, { "x-invalid-end-tag": false }]`
 
+3、上面配置完成后，还是有可能有异常提示，虽然不影响编译，但是vscode上有红色提示也是不爽的，所以还要修改vscode的vetur配置
+
+` "vetur.validation.template": false`
+
 ## Build Setup
 
 ``` bash

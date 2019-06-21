@@ -1,6 +1,7 @@
 <template>
   <div>
     {{ msg }}
+    <p>{{ $route.meta.active }}</p>
   </div>
 </template>
 

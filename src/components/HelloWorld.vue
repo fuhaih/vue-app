@@ -141,19 +141,30 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-h1, h2 {
+<!-- scoped
+ 当样式有作用域时，需要使用 >>> 连接符或 /deep/来把样式传递到子组件或者v-html中。
+ 样式还可以使用modules来标记，具体使用：
+  <style module>
+  .btn {
+  color: red;
+  }
+ </style>
+ <template>
+  <button :class="$style.btn">{{msg}}</button>
+ </template> -->
+<style scoped>
+.hello >>> h1, h2 {
   font-weight: normal;
 }
-ul {
+.hello >>> ul {
   list-style-type: none;
   padding: 0;
 }
-li {
+.hello >>> li {
   display: inline-block;
   margin: 0 10px;
 }
-a {
+.hello >>> a {
   color: #42b983;
 }
 </style>

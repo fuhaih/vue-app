@@ -10,10 +10,19 @@
         {{todo.text}}
       </li>
     </ul>
+    <div class="markdown_content" v-html="markdown">
+      {{ markdown }}
+    </div>
   </div>
 </template>
 
 <script>
+const MarkdownIt = require('markdown-it');
+// MarkdownIt
+// 原理：使用不同的rule来匹配每一行
+// codeblock还需要看一下
+
+
 export default {
   name: 'Todo',
   props: ['todos'],
@@ -23,6 +32,7 @@ export default {
   data() {
     return {
       msg: '',
+      markdown: '',
     };
   },
   methods: {
@@ -34,6 +44,10 @@ export default {
       //   window.console.log(response);
       // });
       // this.$store.commit('increment',1);
+      const md = new MarkdownIt();
+      const mdStr = '# markdown-it rulezz! \r\n# markdown-it rulezz!\r\n    test';
+      this.markdown = md.render(mdStr);
+      window.console.log(this.markdown);
       this.$store.dispatch('auth/updateValue');
       this.todos.push({ text: this.msg });
       window.console.log(this.msg);
@@ -43,6 +57,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 </style>
