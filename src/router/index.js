@@ -1,39 +1,23 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import adminrouter from './/admin';
+import blogrouter from './/blog';
+
+// const adminrouter = require('./admin');
+// const blogrouter = require('./blog');
 
 Vue.use(Router);
 
 const router = new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   meta: {
-    //     title: '首页',
-    //   },
-    //   mode: 'history',
-    //   name: 'HelloWorld',
-    //   component: () => import('@/components/HelloWorld'),
-    // },
     {
       path: '/',
-      meta: {
-        title: '首页',
-        active: 'Home',
-      },
-      mode: 'history',
-      name: 'Home',
-      component: () => import('@/components/HelloWorld'),
+      redirect: '/admin/home',
     },
-    {
-      path: '/About',
-      meta: {
-        title: '关于',
-        active: 'About',
-      },
-      mode: 'history',
-      name: 'About',
-      component: () => import('@/components/About'),
-    },
+    // /admin下子路径
+    adminrouter,
+    // /blog下子路径
+    blogrouter,
   ],
 });
 

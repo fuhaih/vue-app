@@ -1,14 +1,15 @@
 <template>
-  <div class="appcontent">
-    <router-view/>
+  <div>
+    <p>文章内容</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'CustomApp',
+  name: 'Article',
 };
 </script>
 
 <style lang="scss" scoped>
+
 </style>

@@ -45,7 +45,7 @@ export default {
       // });
       // this.$store.commit('increment',1);
       const md = new MarkdownIt();
-      const mdStr = '# markdown-it rulezz! \r\n# markdown-it rulezz!\r\n    test';
+      const mdStr = '``` \r\n测试\r\n ```\r\n # markdown-it rulezz! \r\n# markdown-it rulezz!\r\n    test';
       this.markdown = md.render(mdStr);
       window.console.log(this.markdown);
       this.$store.dispatch('auth/updateValue');
