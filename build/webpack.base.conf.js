@@ -20,6 +20,9 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
+  // externals: {
+  //   'highlight-js': 'commonjs highlight.js'
+  // },
   context: path.resolve(__dirname, '../'),
   entry: {
     //app: './src/main.js'

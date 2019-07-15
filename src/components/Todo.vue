@@ -3,21 +3,24 @@
     <h2>{{this.$store.state.other.Num}}</h2>
     <!-- <input type="text" v-model="msg"  v-validate="'required|email'" name="email"/> -->
     <input type="text" v-model="msg"/>
-    <span>{{ errors.first('email') }}</span>
+    <!-- <span>{{ errors.first('email') }}</span> -->
     <button v-on:click="say">添加</button>
     <ul>
       <li v-for="todo in todos" :key="todo.id">
         {{todo.text}}
       </li>
     </ul>
-    <div class="markdown_content" v-html="markdown">
+    <div class="markdown-body" v-html="markdown" v-highlight>
       {{ markdown }}
     </div>
   </div>
 </template>
-
 <script>
+
+
 const MarkdownIt = require('markdown-it');
+// const hljs = require('highlight.js');
+const emoji = require('markdown-it-emoji');
 // MarkdownIt
 // 原理：使用不同的rule来匹配每一行
 // codeblock还需要看一下
@@ -45,9 +48,10 @@ export default {
       // });
       // this.$store.commit('increment',1);
       const md = new MarkdownIt();
-      const mdStr = '``` \r\n测试\r\n ```\r\n # markdown-it rulezz! \r\n# markdown-it rulezz!\r\n    test';
-      this.markdown = md.render(mdStr);
-      window.console.log(this.markdown);
+      md.use(emoji);
+      this.axios.get('/static/markdown.md').then((response) => {
+        this.markdown = md.render(response.data);
+      });
       this.$store.dispatch('auth/updateValue');
       this.todos.push({ text: this.msg });
       window.console.log(this.msg);
@@ -57,6 +61,21 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+@import 'github-markdown-css';
+@import 'highlight.js/styles/googlecode.css';
 
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+
+@media (max-width: 767px) {
+  .markdown-body {
+      padding: 15px;
+  }
+}
 </style>

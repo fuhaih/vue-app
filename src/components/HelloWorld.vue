@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import Todo from '@/components/Todo';
+const Todo = () => import('@/components/Todo');
 
 export default {
   name: 'HelloWorld',

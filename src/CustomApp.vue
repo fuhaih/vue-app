@@ -10,5 +10,11 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+html,body{
+  height: 100%;
+}
+.appcontent{
+  height: 100%;
+}
 </style>

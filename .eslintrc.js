@@ -28,6 +28,7 @@ module.exports = {
     "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
     "vue/html-self-closing": 0,
     'linebreak-style': 'off',
+    "max-len" : ["error", {code : 300}],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       js: 'never',

@@ -569,6 +569,104 @@ module.exports = {
 }
 ```
 
+## 发布优化
+>vue-router懒加载
+
+这个前面已经设置过了
+
+> nginx使用gzip
+
+```conf
+  gzip on;
+
+  gzip_buffers 32 4k;
+
+  gzip_comp_level 1;
+
+  gzip_min_length 200;
+
+  gzip_types text/plain application/xml application/javascript;
+
+  gzip_vary on;
+
+```
+
+**注意：** woff2字体格式不需要使用gzip压缩，因为该字体格式本身就是一种压缩格式。
+
+> build时不生成map文件
+
+map文件是为了能在webpack打包后还能进行调试，在生产环境上可以不适用map文件。
+
+> 服务端渲染
+
+> CDN引用
+
+把不常修改的库通过CDN引入
+
+CDN(内容分发网络) 
+
+CDN的基本原理是广泛采用各种缓存服务器，将这些缓存服务器分布到用户访问相对集中的地区或网络中，在用户访问网站时，利用全局负载技术将用户的访问指向距离最近的工作正常的缓存服务器上，由缓存服务器直接响应用户请求。
+
+>Webpack 打包体积过大问题
+
+在使用一些组件后，webpack打包的体积会变得很大，包括vendor.js等。
+需要查看是哪些组件导致的问题。
+
+安装webpack-bundle-analyzer
+```
+npm install --save-dev webpack-bundle-analyzer
+```
+
+配置package.json
+```json
+"analyz": "set NODE_ENV=production&&set npm_config_report=true&&npm run build"
+```
+
+运行分析器
+```bash
+npm run analyz;
+```
+
+本程序中分析结果发现iview和highlight这两个包过大。highlight过大的解决方法看[markdown.md](markdown.md)
+
+iview 按需加载
+
+安装插件babel-plugin-import
+
+```bash
+npm install babel-plugin-import --save-dev
+```
+修改.babelrc配置
+
+```json
+"plugins": ["transform-vue-jsx", "transform-runtime",["import", {
+    "libraryName": "iview",
+    "libraryDirectory": "src/components"
+  }]],
+```
+
+注释/删除掉main.js中关于iview的引用，保留css引用
+
+```js
+// import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+// Vue.use(iView);
+```
+
+在使用时按需加载
+
+```js
+import Vue from 'vue';
+import { Layout, Header, Sider, Menu, MenuItem, Icon, Input } from 'iview';
+
+Vue.component('Layout', Layout);
+Vue.component('Header', Header);
+Vue.component('Sider', Sider);
+Vue.component('Menu', Menu);
+Vue.component('MenuItem', MenuItem);
+Vue.component('Icon', Icon);
+Vue.component('Input', Input);
+```
 # 测试
 
 ## 单元测试

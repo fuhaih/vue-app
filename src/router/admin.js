@@ -1,3 +1,4 @@
+const HelloWorld = () => import('@/components/HelloWorld');
 export default {
   path: '/admin',
   children: [
@@ -7,7 +8,7 @@ export default {
         title: '主页',
         active: 'home',
       },
-      component: () => import('@/components/Home'),
+      component: HelloWorld,
     },
     {
       path: 'about',
@@ -17,8 +18,16 @@ export default {
       },
       component: () => import('@/components/About'),
     },
+    {
+      path: 'markdown/:file',
+      meta: {
+        title: '说明',
+      },
+      component: () => import('@/components/admin/staticmd'),
+      props: true,
+    },
   ],
   component: () => import('@/Admin'),
   // 通过props来与$route解耦
-  props: route => ({ active: route.meta.active }),
+  props: route => ({ active: route.meta.active || route.params.file }),
 };

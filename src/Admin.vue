@@ -2,8 +2,7 @@
   <div class="layout">
     <Layout>
       <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
-        <Menu :active-name="active" theme="dark" width="auto"
-        :class="menuitemClasses">
+        <Menu :active-name="active" theme="dark" width="auto" :class="menuitemClasses">
           <MenuItem name="home" :to="'/'">
             <Icon type="ios-navigate"></Icon>
             <span>首页</span>
@@ -11,6 +10,14 @@
           <MenuItem name="about" :to="'/admin/about'">
             <Icon type="ios-search"></Icon>
             <span>关于</span>
+          </MenuItem>
+          <MenuItem name="vue" :to="'/admin/markdown/vue'">
+            <Icon type="md-book" />
+            <span>vue使用</span>
+          </MenuItem>
+          <MenuItem name="markdown" :to="'/admin/markdown/markdown'">
+            <Icon type="md-book" />
+            <span>markdown使用</span>
           </MenuItem>
           <MenuItem name="1-3" :to="'/blog/summary'">
             <Icon type="ios-settings"></Icon>
@@ -28,7 +35,10 @@
           </MenuItem>
           <!-- <Input search enter-button placeholder="Enter something..." /> -->
         </Header>
-        <Content :style="{margin: '20px', background: '#fff', minHeight: '260px'}">
+        <!-- <Content :style="{margin: '20px', background: '#fff', minHeight: '100%'}">
+          <router-view/>
+        </Content> -->
+        <Content :style="{margin: '20px', background: '#fff'}">
           <router-view/>
         </Content>
       </Layout>
@@ -37,6 +47,17 @@
 </template>
 
 <script>
+import Vue from 'vue';
+import { Layout, Header, Sider, Menu, MenuItem, Icon, Input } from 'iview';
+
+Vue.component('Layout', Layout);
+Vue.component('Header', Header);
+Vue.component('Sider', Sider);
+Vue.component('Menu', Menu);
+Vue.component('MenuItem', MenuItem);
+Vue.component('Icon', Icon);
+Vue.component('Input', Input);
+
 export default {
   name: 'Admin',
   props: {
@@ -68,14 +89,6 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-html,body{
-  height: 100%;
-}
-.appcontent{
-  height: 100%;
-}
-</style>
 <style lang="scss" scoped>
 // html,body{
 //   height: 100%;
@@ -90,6 +103,7 @@ html,body{
 }
 .ivu-layout{
   height: 100%;
+  //overflow-y: scroll;
 }
 .layout-header-bar{
   background: #fff;
@@ -111,7 +125,7 @@ html,body{
 .menu-item span{
   display: inline-block;
   overflow: hidden;
-  width: 69px;
+  // width: 69px;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: bottom;
