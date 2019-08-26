@@ -434,6 +434,12 @@ node_modules->eslint->conf->eslint-recommended.js
     ESLint认为一元操作符，是不安全的，所以禁止使用
     可以使用+=1替换
 
+>Closing curly brace does not appear on the same line as the subsequent block
+
+右大括号与下一个块不在同一行
+
+也就是说，在当前场景大括号不能单独占一行
+
 >'v-for' directives require 'v-bind:key' directives.
 
 vue在升级到2.2后，当在组件中使用 v-for 时， key 现在是必须的
@@ -781,3 +787,4 @@ value: state =>  state.value,
 
 配置。eslintrc.js rules
 `"max-len" : ["error", {code : 300}]`
+

@@ -52,7 +52,7 @@ Vue.component('MenuItem', MenuItem);
 Vue.component('Icon', Icon);
 Vue.component('Content', Content);
 Vue.component('Breadcrumb', Breadcrumb);
-Vue.component('Breadcrumb', BreadcrumbItem);
+Vue.component('BreadcrumbItem', BreadcrumbItem);
 Vue.component('Card', Card);
 Vue.component('Footer', Footer);
 

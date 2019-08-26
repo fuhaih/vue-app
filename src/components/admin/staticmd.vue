@@ -1,13 +1,19 @@
 <template>
-  <div class="markdown-body" v-html="markdown">
-    {{ markdown }}
+  <div class="content">
+    <div id="markdown-toc">
+    </div>
+    <div class="markdown-body" v-html="markdown" v-toc>
+      {{ markdown }}
+    </div>
   </div>
+
 </template>
 
 <script>
 import config from '@/components/admin/staticmdconfig';
 
 const MarkdownIt = require('markdown-it');
+// const toc = require('markdown-it-toc');
 const hljs = require('highlight.js/lib/highlight');
 const javascript = require('highlight.js/lib/languages/javascript');
 const bash = require('highlight.js/lib/languages/bash');
@@ -22,6 +28,9 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('haml', haml);
 hljs.registerLanguage('csp', csp);
 const md = new MarkdownIt({
+  html: true,
+  linkify: true,
+  typography: true,
   highlight(str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {
@@ -33,8 +42,9 @@ const md = new MarkdownIt({
     return ''; // use external default escaping
   },
 });
-
 md.use(emoji);
+// md.use(toc);
+
 export default {
   name: 'staticmd',
   props: ['file'],

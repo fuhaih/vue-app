@@ -1,9 +1,7 @@
+* 测试
+* 测试2
+
 ## markdown-it
-
->markdown-it缺点
-
-不兼容html标签
-
 > 安装
 
 ```
@@ -162,6 +160,12 @@ const md = new MarkdownIt({
 });
 md.use(emoji);
 ```
+## 代码块加行号
+
+思路 ul/ol
+```css
+list-style-type:decimal
+```
 ## markdown emoji表情
 
   `angry:            [ '>:(', '>:-(' ]` >:(
@@ -217,7 +221,261 @@ md.use(emoji);
 ## markdown-toc
 生成markdown 目录
 
+个人感觉不是很好用
+* 1需要在markdown文件添加多余标记 @[toc]
+* 2不能指定目录生成位置(有时候需要在markdown文档外生成)
+* 3目录的结构不好变更
 
+**最后自己通过自定义指令来生成markdown目录**
+
+## 通过自定义指令来生成markdown目录
+在main.js函数中添加自定义指令，在指令中还加上了锚点。
+```js
+Vue.directive('toc', (el) => {
+  const GetNode = (hel) => {
+    const nodeli = document.createElement('li');
+    const text = document.createElement('a');
+    text.href = `#${hel.id}`;
+    text.innerHTML = hel.innerHTML;
+    nodeli.appendChild(text);
+    return nodeli;
+  };
+  const head = el.querySelectorAll('h1,h2,h3,h4,h5,h6,h7');
+  const stack = [];
+  const root = document.createElement('ul');
+  let currentIndex = 0;
+  let tag = 0;
+  let currentparent = root;
+  currentparent.dataset.level = 0;
+  for (let i = 0; i < head.length; i += 1) {
+    const index = head[i].tagName.substring(1);
+    if (currentIndex > 0 && currentIndex < index) {
+      const ulnode = document.createElement('ul');
+      ulnode.dataset.level = index - 1;
+      currentparent.appendChild(ulnode);
+      stack.push(currentparent);
+      currentparent = ulnode;
+    } else if (currentIndex > 0 && currentIndex > index) {
+      while (currentparent.dataset.level >= index) {
+        currentparent = stack.pop();
+      }
+    }
+
+    tag += 1;
+    currentIndex = index;
+    // head[i].id = `${currentparent.dataset.level}-${tag}`;
+    head[i].id = `toc-${tag}`;
+    const current = GetNode(head[i]);
+    currentparent.appendChild(current);
+  }
+  el.insertBefore(root, el.firstChild);
+});
+```
+
+在使用锚点的时候会有点问题，路径会变，这时候需要修改Router,给Router添加上scrollBehavior
+
+**注意：** 需要在history模式下
+
+[scrollBehavior用法](https://github.com/vuejs/vue-router/blob/dev/examples/scroll-behavior/app.js)
+```js
+const router = new Router({
+  mode: 'history',
+  routes: [
+    {
+      path: '/',
+      redirect: '/admin/home',
+    },
+    // /admin下子路径
+    adminrouter,
+    // /blog下子路径
+    blogrouter,
+  ],
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        selector: to.hash,
+      };
+    }
+    return { x: 0, y: 0 };
+  },
+});
+
+// 个人感觉scrollBehavior没其到什么作用，在history模式下就能实现锚点
+```
+
+修改自定义指令，通过点击事件来跳转锚点。通过点击事件来跳转的好处是，可以进行平滑跳转(smooth)
+
+```js
+Vue.directive('toc', (el, binding) => {
+  const GetNode = (hel) => {
+    const nodeli = document.createElement('li');
+    const text = document.createElement('a');
+    // text.href = 'javascript:void(0)';
+    text.innerHTML = hel.innerHTML;
+    text.dataset.toc = hel.id;
+    text.onclick = (item) => {
+      const anchor = document.querySelector(`#${item.currentTarget.dataset.toc}`);
+      anchor.scrollIntoView({ behavior: 'smooth' });
+    };
+    nodeli.appendChild(text);
+    return nodeli;
+  };
+  const head = el.querySelectorAll('h1,h2,h3,h4,h5,h6,h7');
+  const stack = [];
+  const root = document.createElement('ul');
+  let currentIndex = 0;
+  let tag = 0;
+  let currentparent = root;
+  currentparent.dataset.level = 0;
+  for (let i = 0; i < head.length; i += 1) {
+    const index = head[i].tagName.substring(1);
+    if (currentIndex > 0 && currentIndex < index) {
+      const ulnode = document.createElement('ul');
+      ulnode.dataset.level = index - 1;
+      currentparent.appendChild(ulnode);
+      stack.push(currentparent);
+      currentparent = ulnode;
+    } else if (currentIndex > 0 && currentIndex > index) {
+      while (currentparent.dataset.level >= index) {
+        currentparent = stack.pop();
+      }
+    }
+    tag += 1;
+    currentIndex = index;
+    // head[i].id = `${currentparent.dataset.level}-${tag}`;
+    head[i].id = `toc-${tag}`;
+    const current = GetNode(head[i]);
+    currentparent.appendChild(current);
+  }
+  if (binding.value === null || binding.value === undefined) {
+    el.insertBefore(root, el.firstChild);
+  } else {
+    const content = document.querySelector(binding.value);
+    if (content === null) {
+      return;
+    }
+    content.innerHTML = '';
+    content.appendChild(root);
+  }
+});
+```
+
+用法:指定元素来放目录
+
+```jsx
+<template>
+  <div class="content">
+    <div id="markdown-toc">
+    </div>
+    <div class="markdown-body" v-html="markdown" v-toc="'#markdown-toc'">
+      {{ markdown }}
+    </div>
+  </div>
+</template>
+export default {
+  name: 'staticmd',
+  props: ['file'],
+  data() {
+    return {
+      markdown: '',
+    };
+  },
+};
+```
+
+用法：当不指定元素时，会直接插入到markdown的前面
+
+```jsx
+<template>
+  <div class="content">
+    <div id="markdown-toc">
+    </div>
+    <div class="markdown-body" v-html="markdown" v-toc>
+      {{ markdown }}
+    </div>
+  </div>
+</template>
+```
+
+
+## markdown不解析原生html
+
+```js
+const md = new MarkdownIt({
+  html: true,
+});
+```
+
+效果：把鼠标移动到下面这句话
+
+<br/>
+<br/>
+<style>
+  .desc {
+      height:20px;
+      display: block;
+      position:relative;
+  }
+  .desc p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .desc:before {
+    content: attr(data-desc);
+    display: none;
+    /* border: 1px solid #C3C3C3; */
+    position: absolute;
+    bottom: 40px;
+    background: black;
+    z-index: 10000;
+    opacity: 0.6;
+    color: white;
+    padding: 15px 15px;
+    border-radius: 10px;
+    width:100%;
+    border-radius: 8px;
+  }
+  .desc:after{
+    content: "";
+    display: none;
+    position: absolute;
+    border-top: 20px solid black;
+    border-left: 15px solid transparent;
+    bottom: 20px;
+    left: 40px;
+    opacity: 0.6;
+    border-right: 15px solid transparent;
+  }
+  .desc:hover:before {
+    display: block;
+  } 
+  .desc:hover:after {
+    display: block;
+  } 
+</style>
+<div style="width:400px;margin: 120px auto auto 40px">
+  <div class="desc" data-desc="描述：测试描述信息的信息的四季豆is金佛ID瑟吉欧if就打死傲娇浮动is阿奇偶if的数据OAif激动死傲娇佛ID是数据都筛分机度搜为金佛你打算">
+    <p>描述：测试描述信息的信息的四季豆is金佛ID瑟吉欧if就打死傲娇浮动is阿奇偶if的数据OAif激动死傲娇佛ID是数据都筛分机度搜为金佛你打算</p>
+  </div>
+</div>
+
+
+## markdown-it-jsx(不好用)
+
+    npm install markdown-it-jsx --save
+
+使用
+
+```js
+const MarkdownIt = require('markdown-it');
+const jsx = require('markdown-it-jsx');
+
+const md = new MarkdownIt();
+md.use(jsx);
+```
+
+目前发现该插件和```标记冲突
 ## 测试c#高亮
 
 ```csharp

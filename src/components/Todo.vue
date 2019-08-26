@@ -16,11 +16,10 @@
   </div>
 </template>
 <script>
-
-
 const MarkdownIt = require('markdown-it');
 // const hljs = require('highlight.js');
 const emoji = require('markdown-it-emoji');
+
 // MarkdownIt
 // 原理：使用不同的rule来匹配每一行
 // codeblock还需要看一下
@@ -47,9 +46,11 @@ export default {
       //   window.console.log(response);
       // });
       // this.$store.commit('increment',1);
-      const md = new MarkdownIt();
+      const md = new MarkdownIt({
+        html: true,
+      });
       md.use(emoji);
-      this.axios.get('/static/markdown.md').then((response) => {
+      this.axios.get('/static/test.md').then((response) => {
         this.markdown = md.render(response.data);
       });
       this.$store.dispatch('auth/updateValue');
