@@ -20,7 +20,7 @@
     "github-markdown-css": "^3.0.1",
     "highlight.js": "^9.15.8",
     "iview": "^3.4.2",
-    "markdown-it": "^8.4.2",
+    "markdown-it": "^12.3.2",
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-toc": "^1.1.0",
     "node-sass": "^4.12.0",
